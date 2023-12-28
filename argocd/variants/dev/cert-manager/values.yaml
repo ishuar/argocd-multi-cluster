@@ -5,3 +5,5 @@ extraArgs:
 - --enable-certificate-owner-ref=true
 prometheus:
   enabled: false
+podLabels:
+  app.kubernetes.io/part-of: dev-fleet
