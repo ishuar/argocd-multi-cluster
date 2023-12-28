@@ -1,0 +1,58 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cert-manager
+  namespace: argocd
+spec:
+  generators:
+    ## https://argocd-applicationset.readthedocs.io/en/stable/Generators-Matrix/
+    - matrix:
+        generators:
+          ## https://argocd-applicationset.readthedocs.io/en/stable/Generators-Git/
+          - git:
+              repoURL: git@github.com:ishuar/argocd-multi-cluster.git
+              revision: HEAD
+              directories:
+                - path: argocd/variants/*
+          ## https://argocd-applicationset.readthedocs.io/en/stable/Generators-Cluster/
+          - clusters:
+              selector:
+                matchLabels:
+                  app.kubernetes.io/part-of: '{{path.basename}}-fleet'
+                  argocd.argoproj.io/secret-type: cluster
+        template:
+          metadata: {}
+          spec:
+            project: 'default' # could create different projects using templating from generators
+            sources:
+              - repoURL: https://charts.jetstack.io
+                targetRevision: 1.13.3
+                chart: cert-manager
+                helm:
+                  # Helm values files for overriding values in the helm chart
+                  valueFiles:
+                    - $values/{{path}}/cert-manager/values.yaml
+                  skipCrds: false
+              - repoURL: 'git@github.com:ishuar/argocd-multi-cluster.git'
+                targetRevision: main
+                ref: values
+            destination: {}
+  template:
+    metadata:
+      name: 'cert-manager-{{path.basename}}'
+    spec:
+      project: default
+      sources: []
+      destination:
+        server: '{{server}}'
+        namespace: cert-manager
+      syncPolicy:
+        ## https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/#automated-sync-policy
+        automated:
+          prune: true
+          selfHeal: false
+        ## https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/#sync-options
+        syncOptions:
+          - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true
+          - ServerSideApply=true
