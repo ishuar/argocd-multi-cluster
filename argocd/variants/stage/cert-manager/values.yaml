@@ -1,0 +1,9 @@
+global:
+  logLevel: 3
+installCRDs: true
+extraArgs:
+- --enable-certificate-owner-ref=true
+prometheus:
+  enabled: false
+podLabels:
+  app.kubernetes.io/part-of: stage-fleet
