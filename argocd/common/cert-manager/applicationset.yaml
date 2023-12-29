@@ -11,9 +11,13 @@ spec:
           ## https://argocd-applicationset.readthedocs.io/en/stable/Generators-Git/
           - git:
               repoURL: git@github.com:ishuar/argocd-multi-cluster.git
-              revision: HEAD
+              revision: main
               directories:
-                - path: argocd/variants/*
+                - path: argocd/envs/*
+                - path: "**/_exclude/*"
+                  exclude: true
+              files:
+                - path: 'argocd/envs/*/cert-manager/git-generator-overides.yaml'
           ## https://argocd-applicationset.readthedocs.io/en/stable/Generators-Cluster/
           - clusters:
               selector:
@@ -23,10 +27,10 @@ spec:
         template:
           metadata: {}
           spec:
-            project: 'default' # could create different projects using templating from generators
+            project: 'default' # could use different projects using templating from generators
             sources:
               - repoURL: https://charts.jetstack.io
-                targetRevision: 1.13.3
+                targetRevision: '{{.targetRevision}}'
                 chart: cert-manager
                 helm:
                   # Helm values files for overriding values in the helm chart
@@ -45,7 +49,7 @@ spec:
       sources: []
       destination:
         server: '{{server}}'
-        namespace: cert-manager
+        namespace: '{{path[1]}}'
       syncPolicy:
         ## https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/#automated-sync-policy
         automated:
