@@ -4,6 +4,7 @@ metadata:
   name: cert-manager
   namespace: argocd
 spec:
+  ## https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/GoTemplate/
   goTemplate: true
   goTemplateOptions: ['missingkey=error']
   generators:
@@ -15,34 +16,33 @@ spec:
               repoURL: git@github.com:ishuar/argocd-multi-cluster.git
               revision: main
               files:
-                - path: 'argocd/envs/**/cert-manager/git-generator-overides.json'
-              pathParamPrefix: gitFile ## optional , if removed remove (.gitFile) prefix from all references
+                - path: "argocd/envs/**/cert-manager/git-generator-overides.json"
           ## https://argocd-applicationset.readthedocs.io/en/stable/Generators-Cluster/
           - clusters:
               selector:
                 matchLabels:
-                  app.kubernetes.io/part-of: '{{.gitFile.environment}}-fleet'
+                  app.kubernetes.io/part-of: '{{.environment}}-fleet'
                   argocd.argoproj.io/secret-type: cluster
   template:
     metadata:
-      name: 'cert-manager-{{index .gitFile.path.segments 2}}'
+      name: 'cert-manager-{{index .path.segments 2}}'
     spec:
-      project: default ## Can use dynamic project name from git file generator. ( project shoud be created before hand and can be part of bootstrap)
+      project: default ## Can use dynamic project name from git file generator. (project shoud be created before hand and can be part of bootstrap)
       sources:
         - repoURL: https://charts.jetstack.io
-          targetRevision: '{{.gitFile.chartVersion}}'
+          targetRevision: '{{.chartVersion}}'
           chart: cert-manager
           helm:
             # Helm values files for overriding values in the helm chart
             valueFiles:
-              - $values/{{.gitFile.path}}/values.yaml
+              - $values/{{.path.path}}/values.yaml
             skipCrds: false
         - repoURL: 'git@github.com:ishuar/argocd-multi-cluster.git'
           targetRevision: main
           ref: values
       destination:
         server: '{{.server}}'
-        namespace: '{{.gitFile.path.basename}}'
+        namespace: '{{.path.basenameNormalized}}'
       syncPolicy:
         ## https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/#automated-sync-policy
         automated:
