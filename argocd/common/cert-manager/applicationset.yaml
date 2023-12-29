@@ -4,52 +4,45 @@ metadata:
   name: cert-manager
   namespace: argocd
 spec:
+  goTemplate: true
+  goTemplateOptions: ['missingkey=error']
   generators:
-    ## https://argocd-applicationset.readthedocs.io/en/stable/Generators-Matrix/
+    # https://argocd-applicationset.readthedocs.io/en/stable/Generators-Matrix/
     - matrix:
         generators:
           ## https://argocd-applicationset.readthedocs.io/en/stable/Generators-Git/
           - git:
               repoURL: git@github.com:ishuar/argocd-multi-cluster.git
               revision: main
-              directories:
-                - path: argocd/envs/*
-                - path: "**/_exclude/*"
-                  exclude: true
               files:
-                - path: 'argocd/envs/*/cert-manager/git-generator-overides.yaml'
+                - path: 'argocd/envs/**/cert-manager/git-generator-overides.json'
+              pathParamPrefix: gitFile ## optional , if removed remove (.gitFile) prefix from all references
           ## https://argocd-applicationset.readthedocs.io/en/stable/Generators-Cluster/
           - clusters:
               selector:
                 matchLabels:
-                  app.kubernetes.io/part-of: '{{path.basename}}-fleet'
+                  app.kubernetes.io/part-of: '{{.gitFile.environment}}-fleet'
                   argocd.argoproj.io/secret-type: cluster
-        template:
-          metadata: {}
-          spec:
-            project: 'default' # could use different projects using templating from generators
-            sources:
-              - repoURL: https://charts.jetstack.io
-                targetRevision: '{{.targetRevision}}'
-                chart: cert-manager
-                helm:
-                  # Helm values files for overriding values in the helm chart
-                  valueFiles:
-                    - $values/{{path}}/cert-manager/values.yaml
-                  skipCrds: false
-              - repoURL: 'git@github.com:ishuar/argocd-multi-cluster.git'
-                targetRevision: main
-                ref: values
-            destination: {}
   template:
     metadata:
-      name: 'cert-manager-{{path.basename}}'
+      name: 'cert-manager-{{index .gitFile.path.segments 2}}'
     spec:
-      project: default
-      sources: []
+      project: default ## Can use dynamic project name from git file generator. ( project shoud be created before hand and can be part of bootstrap)
+      sources:
+        - repoURL: https://charts.jetstack.io
+          targetRevision: '{{.gitFile.chartVersion}}'
+          chart: cert-manager
+          helm:
+            # Helm values files for overriding values in the helm chart
+            valueFiles:
+              - $values/{{.gitFile.path}}/values.yaml
+            skipCrds: false
+        - repoURL: 'git@github.com:ishuar/argocd-multi-cluster.git'
+          targetRevision: main
+          ref: values
       destination:
-        server: '{{server}}'
-        namespace: '{{path[1]}}'
+        server: '{{.server}}'
+        namespace: '{{.gitFile.path.basename}}'
       syncPolicy:
         ## https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/#automated-sync-policy
         automated:
