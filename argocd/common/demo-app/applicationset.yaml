@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: demo-app
+  namespace: argocd
+spec:
+  ## https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/GoTemplate/
+  goTemplate: true
+  goTemplateOptions: ['missingkey=error']
+  generators:
+    # https://argocd-applicationset.readthedocs.io/en/stable/Generators-Matrix/
+    - matrix:
+        generators:
+          ## https://argocd-applicationset.readthedocs.io/en/stable/Generators-Git/
+          - git:
+              repoURL: git@github.com:ishuar/argocd-multi-cluster.git
+              revision: main
+              files:
+                - path: "argocd/envs/**/demo-app/git-generator-overides.json"
+          ## https://argocd-applicationset.readthedocs.io/en/stable/Generators-Cluster/
+          - clusters:
+              selector:
+                matchLabels:
+                  app.kubernetes.io/part-of: '{{.environment}}-fleet'
+                  argocd.argoproj.io/secret-type: cluster
+  template:
+    metadata:
+      name: 'demo-app-{{index .path.segments 2}}'
+    spec:
+      project: default ## Can use dynamic project name from git file generator. (project shoud be created before hand and can be part of bootstrap)
+      sources:
+        - repoURL: 'git@github.com:ishuar/argocd-multi-cluster.git'
+          targetRevision: main
+          path: '{{.path.path}}'
+      destination:
+        server: '{{.server}}'
+        namespace: '{{.path.basenameNormalized}}'
+      syncPolicy:
+        ## https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/#automated-sync-policy
+        automated:
+          prune: true
+          selfHeal: false
+        ## https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/#sync-options
+        syncOptions:
+          - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true
+          - ServerSideApply=true

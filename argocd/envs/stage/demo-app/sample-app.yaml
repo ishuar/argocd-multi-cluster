@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kubernetes-in-real-world-webapp
+  name: kubernetes-in-real-world-webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubernetes-in-real-world-webapp
+  template:
+    metadata:
+      labels:
+        app: kubernetes-in-real-world-webapp
+    spec:
+      containers:
+        - image: ishuar/kubernetes-in-real-life:nginx-webapp-0.0.2
+          name: kubernetes-in-real-life
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            limits:
+              memory: '128Mi'
+            requests:
+              memory: '64Mi'
