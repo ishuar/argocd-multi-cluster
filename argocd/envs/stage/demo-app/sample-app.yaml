@@ -27,6 +27,6 @@ spec:
             periodSeconds: 10
           resources:
             limits:
-              memory: '128Mi'
+              memory: "128Mi"
             requests:
-              memory: '64Mi'
+              memory: "64Mi"

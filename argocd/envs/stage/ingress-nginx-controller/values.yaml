@@ -8,14 +8,13 @@ controller:
     enabled: true
     serviceMonitor:
       enabled: false
-  minAvailable: '50%'
+  minAvailable: "50%"
   service:
     ## https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#loadbalancer-annotations
     annotations:
-      service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: '/healthz'
+      service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: "/healthz"
   replicaCount: 2
   podSecurityContext:
     runAsNonRoot: true
     seccompProfile:
-      type: 'RuntimeDefault'
-
+      type: "RuntimeDefault"
