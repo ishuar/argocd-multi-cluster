@@ -8,6 +8,7 @@ prometheus:
 podLabels:
   app.kubernetes.io/part-of: stage-fleet
   azure.workload.identity/use: 'true'
+  cloud: default ## this will be over-riden and merged by cloud specific values.
 serviceAccount:
   name: sa-cert-manager
   annotations:

@@ -36,6 +36,7 @@ spec:
             # Helm values files for overriding values in the helm chart
             valueFiles:
               - $values/{{.path.path}}/values.yaml
+              - $values/{{.path.path}}/{{index .metadata.labels "cloud"}}-values.yaml ## fetch the labels from the cluster secret and merge the cloud specific values.
             skipCrds: false
         - repoURL: 'git@github.com:ishuar/argocd-multi-cluster.git'
           targetRevision: main
