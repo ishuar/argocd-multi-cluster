@@ -1,0 +1,19 @@
+# Default values for external-secrets-operator.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+externalSecrets:
+  enabled: true # set to false to disable the external-secrets-operator
+  # serviceAccount:
+  #     name: sa-external-secrets-operator
+  #     create: true
+  #     annotations:
+  #       azure.workload.identity/client-id: 'placeholder'
+  #       azure.workload.identity/tenant-id: 'placeholder'
+  # podLabels:
+  #   azure.workload.identity/use: "true"
+
+clusterSecretStore:
+  enabled: true
+  azurekv:
+    # vaultUrl: "kv-external-secrets"
