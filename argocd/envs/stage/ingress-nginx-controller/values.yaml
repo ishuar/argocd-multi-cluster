@@ -1,0 +1,26 @@
+controller:
+  ingressClassResource:
+    controllerValue: k8s.io/ingress-nginx
+    default: true
+    enabled: true
+    name: nginx
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: false
+  minAvailable: '50%'
+  service:
+    ## https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#loadbalancer-annotations
+    annotations:
+      service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: '/healthz'
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 4
+    targetCPUUtilizationPercentage: 90
+    targetMemoryUtilizationPercentage: 90
+  podSecurityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: 'RuntimeDefault'
+    allowPrivilegeEscalation: false
