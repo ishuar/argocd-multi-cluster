@@ -15,5 +15,5 @@ externalSecrets:
 
 clusterSecretStore:
   enabled: true
-  azurekv:
+  azurekv: {}
     # vaultUrl: "kv-external-secrets"

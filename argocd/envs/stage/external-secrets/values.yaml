@@ -1,0 +1,14 @@
+externalSecrets:
+  serviceAccount:
+    name: sa-external-secrets-operator
+    create: true
+    annotations:
+      azure.workload.identity/client-id: '154c36a2-2d0e-47c4-9ccd-f7acc665c2c4'
+      azure.workload.identity/tenant-id: "3de73d75-c7d2-4360-9c96-48d3caab11e5"
+  podLabels:
+    azure.workload.identity/use: 'true'
+  serviceMonitor:
+    enabled: false
+clusterSecretStore:
+  azurekv:
+    vaultUrl: https://superuniquekv001.vault.azure.net/
