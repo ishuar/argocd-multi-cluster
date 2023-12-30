@@ -13,8 +13,9 @@ controller:
     ## https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#loadbalancer-annotations
     annotations:
       service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: '/healthz'
+  replicaCount: 2
   autoscaling:
-    enabled: true
+    enabled: false
     minReplicas: 2
     maxReplicas: 4
     targetCPUUtilizationPercentage: 90
