@@ -30,11 +30,10 @@ resource "azurerm_subnet" "aks_api" {
   }
 }
 
-# ## Use a domain what you own.
-# ## Public DNS Zone, configure forwarders for this sub-domain or root domain to the nameservers from this DNS zone on your domain registrar
-# resource "azurerm_dns_zone" "k8s_learndevops_in" {
-#   name                = "k8s.learndevops.in" ## replace this with a domain what you own.
-#   resource_group_name = azurerm_resource_group.aks.name
-#   tags                = local.tags
-# }
-
+## Use a domain what you own.
+## Public DNS Zone, configure forwarders for this sub-domain or root domain to the nameservers from this DNS zone on your domain registrar
+resource "azurerm_dns_zone" "stage_learndevops_in" {
+  name                = "stage.learndevops.in" ## replace this with a domain what you own.
+  resource_group_name = azurerm_resource_group.aks.name
+  tags                = local.tags
+}

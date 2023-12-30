@@ -37,23 +37,42 @@ provider "kubernetes" {
 ## source: https://github.com/ishuar/terraform-azure-workload-identity
 ## TF registry: https://registry.terraform.io/modules/ishuar/workload-identity/azure/latest
 
-module "argocd_workload_identity" {
-  source  = "ishuar/workload-identity/azure"
-  version = "0.2.0"
+# module "argocd_workload_identity" {
+#   source  = "ishuar/workload-identity/azure"
+#   version = "0.2.0"
 
-  resource_group_name         = azurerm_resource_group.aks.name
-  location                    = azurerm_resource_group.aks.location
-  oidc_issuer_url             = data.azurerm_kubernetes_cluster.this.oidc_issuer_url
-  service_account_name        = "${local.prefix}-service-account"
-  namespace                   = "argocd"
-  create_kubernetes_namespace = true
-  create_service_account      = true
-  role_assignments = [
-    {
-      role_definition_name = "Azure Kubernetes Service RBAC Cluster Admin"
-      scope                = data.azurerm_kubernetes_cluster.this.id
-    },
-  ]
+#   resource_group_name         = azurerm_resource_group.aks.name
+#   location                    = azurerm_resource_group.aks.location
+#   oidc_issuer_url             = data.azurerm_kubernetes_cluster.this.oidc_issuer_url
+#   service_account_name        = "${local.prefix}-service-account"
+#   namespace                   = "argocd"
+#   create_kubernetes_namespace = true
+#   create_service_account      = true
+#   role_assignments = [
+#     {
+#       role_definition_name = "Azure Kubernetes Service RBAC Cluster Admin"
+#       scope                = data.azurerm_kubernetes_cluster.this.id
+#     },
+#   ]
+
+#   depends_on = [
+#     module.argocd,
+#     data.azurerm_kubernetes_cluster.this,
+#     azurerm_role_assignment.cluster_admin
+#   ]
+# }
+
+module "workload_identity" {
+  for_each = { for identity in local.identities : identity.service_account_name => identity }
+
+  source               = "ishuar/workload-identity/azure"
+  version              = "0.2.0"
+  resource_group_name  = azurerm_resource_group.aks.name
+  location             = azurerm_resource_group.aks.location
+  oidc_issuer_url      = data.azurerm_kubernetes_cluster.this.oidc_issuer_url
+  service_account_name = each.value.service_account_name
+  namespace            = each.value.namespace
+  role_assignments     = each.value.role_assignments
 
   depends_on = [
     module.argocd,
