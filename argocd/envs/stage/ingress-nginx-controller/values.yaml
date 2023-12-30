@@ -14,12 +14,6 @@ controller:
     annotations:
       service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: '/healthz'
   replicaCount: 2
-  autoscaling:
-    enabled: false
-    minReplicas: 2
-    maxReplicas: 4
-    targetCPUUtilizationPercentage: 90
-    targetMemoryUtilizationPercentage: 90
   podSecurityContext:
     runAsNonRoot: true
     seccompProfile:
