@@ -1,0 +1,22 @@
+---
+## https://cert-manager.io/docs/configuration/acme/dns01/azuredns/#configure-a-clusterissuer
+## Applied locally , can be a part of cert manager local helm chart
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    email: ishan.sharma@commercetools.com
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers:
+      - dns01:
+          azureDNS:
+            environment: AzurePublicCloud
+            hostedZoneName: stage.learndevops.in
+            resourceGroupName: rg-argocd-cluster
+            subscriptionID: "66f26fea-ff43-4f9a-bf6d-e2d18d696616"
+            managedIdentity:
+              clientID: "4d4dc855-2a64-4c68-bcfd-1fc8ba85d6dd"
