@@ -89,17 +89,20 @@ In this demo we are using following generators:
 We are trying to achieve following goals:
 
 - Establish GitOps and IaC. (everything as configuration and code)
-- Dynamic Application Provisioning to multi cluster environments.
-- Simplified cloud agnostics configuration management for applications.
-- Provide mechanisms for value files in DRY formatt.(Multi level overrides)
-- Continuous reconciliation and parrallel deployments.
+* Dynamic Application Provisioning to multi cluster environments.
+* Simplified cloud agnostics configuration management for applications.
+* Provide mechanisms for value files in DRY formatt.(Multi level overrides)
+* Continuous reconciliation and parrallel deployments.
 
 ---
 ![ blur bg opacity:.5](assets/mandala.png)
 
 ## Feedback :raising_hand:
 
-- Source GitHub Repo : https://github.com/ishuar/argocd-multi-cluster
 - Questions and Answers
 
-I am confident that there is plenty of room for improvements, and any feedback or questions are welcome.
+I am confident that there is plenty of room for improvements
+
+Any feedback or questions are welcome.
+
+* Source GitHub Repo : https://github.com/ishuar/argocd-multi-cluster
