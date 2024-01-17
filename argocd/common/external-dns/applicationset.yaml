@@ -16,16 +16,19 @@ spec:
               repoURL: git@github.com:ishuar/argocd-multi-cluster.git
               revision: main
               files:
-                - path: "argocd/envs/**/external-dns/git-generator-overides.json"
+                - path: "argocd/envs/**/**/**/cert-manager/git-generator-overides.json"
           ## https://argocd-applicationset.readthedocs.io/en/stable/Generators-Cluster/
           - clusters:
               selector:
                 matchLabels:
-                  app.kubernetes.io/part-of: '{{.environment}}-fleet'
+                  app.kubernetes.io/part-of: '{{.environment}}-fleet' ## filter on environment type
+                  cluster-region: '{{index .path.segments 4}}'        ## filter on region type
+                  cloud-provider: '{{index .path.segments 3}}'        ## filter on cloud type
                   argocd.argoproj.io/secret-type: cluster
+
   template:
     metadata:
-      name: 'external-dns-{{index .path.segments 2}}'
+      name: 'external-dns-{{index .path.segments 2}}-{{index .path.segments 3}}-{{index .path.segments 4}}'
     spec:
       project: default ## Can use dynamic project name from git file generator. (project shoud be created before hand and can be part of bootstrap)
       sources:
@@ -47,7 +50,7 @@ spec:
         ## https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/#automated-sync-policy
         automated:
           prune: true
-          selfHeal: false
+          selfHeal: true
         ## https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/#sync-options
         syncOptions:
           - CreateNamespace=true
