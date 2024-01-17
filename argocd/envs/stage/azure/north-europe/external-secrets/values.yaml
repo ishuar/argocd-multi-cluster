@@ -1,3 +1,6 @@
+## region and cloud specific values
+## fully isolated and only impact the cluster in the cloud provider region
+
 externalsecrets:
   fullnameOverride: external-secrets
   serviceAccount:

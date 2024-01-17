@@ -16,16 +16,19 @@ spec:
               repoURL: git@github.com:ishuar/argocd-multi-cluster.git
               revision: main
               files:
-                - path: "argocd/envs/**/cert-manager/git-generator-overides.json"
+                - path: "argocd/envs/**/**/**/cert-manager/git-generator-overides.json"
           ## https://argocd-applicationset.readthedocs.io/en/stable/Generators-Cluster/
           - clusters:
               selector:
+                ## required labels on the cluster secret, controlls the logic of cluster selection on the basis of labels/filters.
                 matchLabels:
-                  app.kubernetes.io/part-of: '{{.environment}}-fleet'
+                  app.kubernetes.io/part-of: '{{.environment}}-fleet' ## filter on environment type
+                  cluster-region: '{{index .path.segments 4}}'        ## filter on region type
+                  cloud-provider: '{{index .path.segments 3}}'        ## filter on cloud type
                   argocd.argoproj.io/secret-type: cluster
   template:
     metadata:
-      name: 'cert-manager-{{index .path.segments 2}}'
+      name: 'cert-manager-{{index .path.segments 2}}-{{index .path.segments 3}}-{{index .path.segments 4}}' ## in case detailed name is required.
     spec:
       project: default ## Can use dynamic project name from git file generator. (project shoud be created before hand and can be part of bootstrap)
       sources:
@@ -35,8 +38,7 @@ spec:
           helm:
             # Helm values files for overriding values in the helm chart
             valueFiles:
-              - $values/{{.path.path}}/values.yaml
-              - $values/{{.path.path}}/{{index .metadata.labels "cloud"}}-values.yaml ## fetch the labels from the cluster secret and merge the cloud specific values.
+              - $values/{{.path.path}}/values.yaml ## single isolated values file.
             skipCrds: false
         - repoURL: 'git@github.com:ishuar/argocd-multi-cluster.git'
           targetRevision: main
@@ -48,7 +50,7 @@ spec:
         ## https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/#automated-sync-policy
         automated:
           prune: true
-          selfHeal: false
+          selfHeal: true
         ## https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/#sync-options
         syncOptions:
           - CreateNamespace=true
