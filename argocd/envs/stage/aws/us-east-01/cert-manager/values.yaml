@@ -1,0 +1,13 @@
+
+## Cert Manager values
+global:
+  logLevel: 3
+installCRDs: true
+extraArgs:
+- --enable-certificate-owner-ref=true
+prometheus:
+  enabled: false
+podLabels:
+  app.kubernetes.io/part-of: dev-fleet
+  region: us-east-01
+  cloud: aws
