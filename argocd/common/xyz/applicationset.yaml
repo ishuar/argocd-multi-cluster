@@ -1,0 +1,3 @@
+## copy any existing applicationset.yaml
+
+## find and replace the existing appsetname (metadata.name field) with the required name in complete file.
