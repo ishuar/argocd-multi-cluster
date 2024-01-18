@@ -1,0 +1,5 @@
+global:
+  logLevel: 3
+installCRDs: true
+podLabels:
+  app.kubernetes.io/part-of: stage-fleet
