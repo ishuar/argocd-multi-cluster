@@ -42,29 +42,74 @@ The repository is organized as follows:
 │   │   └── secrets
 │   │       ├── clusters                ## clusters as secrets in argocd management cluster
 │   │       └── repositories            ## repositories as secrets in argocd management cluster
-│   ├── common                          ## common directory for all applications need to deployment through all clusters
+│   ├── common                          ## common directory for all applications need to be deployed through all clusters
+│   │   ├── README.md
 │   │   ├── cert-manager
+│   │   │   └── applicationset.yaml
 │   │   ├── demo-app
+│   │   │   └── applicationset.yaml
 │   │   ├── external-dns
+│   │   │   └── applicationset.yaml
 │   │   ├── external-secrets-operator
+│   │   │   └── applicationset.yaml
 │   │   └── nginx-ingress-controller
-│   ├── envs                            ## deployment environments ( dev, stage , prod etc.)
-│   │   ├── dev
-│   │   │   └── cert-manager
-│   │   ├── stage
-│   │   │   ├── cert-manager            ## example app also used as namespace value in the applicationn set
-│   │   │   │   ├── aws-values.yaml     ## aws cloud specific values will be merged with default values on the basis of cluster secret labels
-│   │   │   │   ├── azure-values.yaml   ## azure cloud specific values will be merged with default values on the basis of cluster secret labels
-│   │   │   │   ├── git-generator-overides.json ## git file generator for config management of appset, such as env
-│   │   │   │   └── values.yaml         ## Default values used for the app deployments ( best practices )
-│   │   │   ├── demo-app
-│   │   │   ├── external-dns
-│   │   │   ├── external-secrets
-│   │   │   └── ingress-nginx-controller
-│   │   └── variants                  ## optional variants folder for each cloud providers ( not used in this repo )
+│   │       └── applicationset.yaml
+│   ├── envs                                              ## deployment environments( dev, stage , prod etc.) have same structure.
+│   │   ├── dev                                           ## dev/playground environment clusters directory configuration.
+│   │   │   ├── aws                                       ## AWS cloud clusters directory configuration.
+│   │       │   ├── globals                               ## Global Env. values for AWS cloud per app ::risk:: impacts all aws clusters in dev env.(disabled)
+│   │   │   │   │   ├── cert-manager                      ## Cert Manager ( Any Application holding global values for aws cloud ) (feature disabled in repo)
+│   │   │   │   │   │   └── values.yaml                   ## Global app Values , will be merged with regional values. (feature disabled in repo)
+│   │   │   │   ├── eu-central-01                         ## AWS region specific clusters configuration.
+│   │   │   │   │   ├── cert-manager                      ## example app also used as namespace value in the applicationn set
+│   │   │   │   │   │   ├── git-generator-overides.json   ## git file generator for config management of appset, such as chart version
+│   │   │   │   │   │   └── values.yaml                   ## regional, cloud ,and environment specific values file
+│   │   │   │   │   └── demo-app
+│   │   │   │   │       ├── git-generator-overides.json
+│   │   │   │   │       ├── kustomization.yaml
+│   │   │   │   │       └── sample-app.yaml
+│   │   │   │   └── us-east-01
+│   │   │   ├── azure                                     ## Azure cloud clusters directory
+│   │   │   └── gcp                                       ## GCP cloud clusters directory
+│   │   │   └── globals                                   ## Global dev env values per app ::risk:: impacts all clusters in dev env.(feature disabled in repo)
+│   │   │       └── cert-manager                          ## Cert Manager ( Any Application holding global values )  (feature disabled in repo)
+|   │   │           └── values.yaml                       ## Global app Values , will be merged with regional values. (feature disabled in repo)
+│   │   └── stage
 │   │       ├── aws
+│   │       │   ├── eu-central-01
+│   │       │   └── us-east-01
+│   │       │       ├── README.md
+│   │       │       └── cert-manager
+│   │       │           ├── git-generator-overides.json
+│   │       │           └── values.yaml
 │   │       ├── azure
-│   │       └── gcp
+│   │       │   ├── globals
+│   │       │   │   └── README.md
+│   │       │   ├── north-europe
+│   │       │   │   ├── cert-manager
+│   │       │   │   │   ├── git-generator-overides.json
+│   │       │   │   │   └── values.yaml
+│   │       │   │   ├── demo-app
+│   │       │   │   │   ├── git-generator-overides.json
+│   │       │   │   │   ├── ingress.yaml
+│   │       │   │   │   ├── kustomization.yaml
+│   │       │   │   │   ├── sample-app.yaml
+│   │       │   │   │   └── service.yaml
+│   │       │   │   ├── external-dns
+│   │       │   │   │   ├── git-generator-overides.json
+│   │       │   │   │   └── values.yaml
+│   │       │   │   ├── external-secrets
+│   │       │   │   │   ├── git-generator-overides.json
+│   │       │   │   │   └── values.yaml
+│   │       │   │   └── ingress-nginx-controller
+│   │       │   │       ├── git-generator-overides.json
+│   │       │   │       └── values.yaml
+│   │       │   └── west-europe
+│   │       ├── gcp
+│   │       │   ├── asia-east1
+│   │       │   └── europe-west1
+│   │       └── globals
+│   │           └── README.md
 │   │
 │   └── yamls
 ├── charts                            ## local charts , in case umbrella or custom chart is needed
