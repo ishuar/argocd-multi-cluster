@@ -6,7 +6,7 @@ environments:
     ## https://github.com/helmfile/vals?tab=readme-ov-file#terraform-in-azurerm-blob-storage-tfstateazurerm
       - argocdClientId: '{{ printf "ref+tfstateazurerm://%s/output.client_id_used_by_argocd" (readFile "global.yaml" | fromYaml).tfstate  }}'
       - tenantId: '{{ printf "ref+tfstateazurerm://%s/output.tenant_id" (readFile "global.yaml" | fromYaml).tfstate  }}'
-      - externalSecretsClientId: '{{ printf "ref+tfstateazurerm://%s/output.client_ids.sa-external-secrets-operator" (readFile "global.yaml" | fromYaml).tfstate  }}'
+      - externalSecretsClientId: '{{ printf "ref+tfstateazurerm://%s/output.client_id_used_by_external_secrets_operator" (readFile "global.yaml" | fromYaml).tfstate  }}'
       - key_vault_url: '{{ printf "ref+tfstateazurerm://%s/output.secrets_key_vault_url" (readFile "global.yaml" | fromYaml).tfstate  }}'
 
 ---

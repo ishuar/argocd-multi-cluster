@@ -43,9 +43,10 @@ resource "azurerm_role_assignment" "remote_cluster_admin" {
 
 resource "azurerm_key_vault_secret" "remote_cluster" {
   for_each = {
-    tenantid          = data.azurerm_client_config.current.tenant_id
-    argocdclientid    = azurerm_user_assigned_identity.argocd.client_id
-    remoteclustercert = data.azurerm_kubernetes_cluster.remote.kube_config.0.cluster_ca_certificate
+    "tenantid"               = data.azurerm_client_config.current.tenant_id
+    "argocd-client-id"       = azurerm_user_assigned_identity.argocd.client_id
+    "remote-cluster-ca-cert" = data.azurerm_kubernetes_cluster.remote.kube_config.0.cluster_ca_certificate
+    "remote-cluster-fqdn"    = data.azurerm_kubernetes_cluster.remote.fqdn
   }
 
   name         = each.key
