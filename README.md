@@ -9,7 +9,9 @@ managed within the footer file
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-
+  <a href="https://github.com/ishuar/argocd-multi-cluster">
+    <img src="https://github.com/ishuar/argocd-multi-cluster/blob/main/assets/AKS-Argocd-control-plane-with-multi-remote-clusters.drawio.svg" alt="Logo">
+  </a>
   <h1 align="center"><strong>Deploy Applications in Multi-Cluster with ArgoCD</strong></h1>
   <p align="center">
     🌩️ How to deploy applications in an multi-cluster environment distributed across multiple clouds using ArgoCd and its native operators.🌩️
