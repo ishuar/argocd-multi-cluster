@@ -1,0 +1,60 @@
+environments:
+  default:
+    values:
+    ## To use terraform state outputs in the helm release (ingress DNS name,clientsIds etc)
+    ## workflow should have tfstate bucket read permissions
+    ## https://github.com/helmfile/vals?tab=readme-ov-file#terraform-in-azurerm-blob-storage-tfstateazurerm
+      - argocdClientId: '{{ printf "ref+tfstateazurerm://%s/output.client_id_used_by_argocd" (readFile "global.yaml" | fromYaml).tfstate  }}'
+      - tenantId: '{{ printf "ref+tfstateazurerm://%s/output.tenant_id" (readFile "global.yaml" | fromYaml).tfstate  }}'
+      - externalSecretsClientId: '{{ printf "ref+tfstateazurerm://%s/output.client_ids.sa-external-secrets-operator" (readFile "global.yaml" | fromYaml).tfstate  }}'
+
+---
+repositories:
+  - name: argo
+    url: https://argoproj.github.io/argo-helm
+  - name: external-secrets
+    url: https://charts.external-secrets.io
+
+helmDefaults:
+  cleanupOnFail: false
+  wait: true
+  waitForJobs: true
+  createNamespace: true
+  timeout: 300
+  kubeContext: argocd-cluster-aks ## local development
+
+missingFileHandler: Error
+
+commonLabels: {}
+
+releases:
+  - name: argocd
+    namespace: argocd
+    chart: argo/argo-cd
+    version: "5.53.9"
+    values:
+      - ./values/argocd.yaml
+      - server:
+          serviceAccount:
+            annotations:
+              azure.workload.identity/client-id: '{{ .Values.argocdClientId }}'
+              azure.workload.identity/tenant-id: '{{ .Values.tenantId }}'
+            name: sa-argocd-server
+        controller:
+          serviceAccount:
+            name: sa-argocd-application-controller
+            annotations:
+              azure.workload.identity/client-id: '{{ .Values.argocdClientId }}'
+              azure.workload.identity/tenant-id: '{{ .Values.tenantId }}'
+
+  - name: external-secrets
+    namespace: external-secrets
+    chart: external-secrets/external-secrets
+    version: "0.9.7"
+    values:
+      - ./values/external-secrets.yaml
+      - serviceAccount:
+          annotations:
+            azure.workload.identity/client-id: '{{ .Values.externalSecretsClientId }}'
+            azure.workload.identity/tenant-id: '{{ .Values.tenantId }}'
+          name: sa-external-secrets-operator ## should match with the sa used in federation.
