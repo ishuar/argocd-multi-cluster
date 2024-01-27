@@ -32,7 +32,7 @@ resource "azurerm_role_assignment" "cluster_admin" {
 module "ssh_key_generator" {
   source               = "github.com/ishuar/terraform-sshkey-generator?ref=v1.1.0"
   algorithm            = "RSA"
-  private_key_filename = "${path.module}/aks-private-key"
+  private_key_filename = "${path.module}/aks-private-key" # add this path to your gitignore
   file_permission      = "600"
 }
 
@@ -55,7 +55,7 @@ module "argocd" {
   location            = azurerm_resource_group.aks.location
   resource_group_name = azurerm_resource_group.aks.name
   name                = "${local.prefix}-aks"
-  dns_prefix          = "aks-argocd"
+  dns_prefix          = var.argocd_aks_dns_prefix
   key_data            = trimspace(module.ssh_key_generator.public_ssh_key)
   tags                = local.tags
 

@@ -20,5 +20,4 @@ provider "azurerm" {
 }
 
 provider "azapi" {
-  # Configuration options
 }

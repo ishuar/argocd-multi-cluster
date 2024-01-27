@@ -1,11 +1,13 @@
 locals {
-  prefix = "argocd-cluster"
-  tags = {
-    managed_by      = "terraform"
-    gitops_operator = "argocd"
-    environment     = "dev"
-    github_repo     = "ishuar/argocd-multi-cluster"
-  }
+  prefix = var.prefix != "" ? var.prefix : "argocd-cluster"
+  tags = merge(
+    {
+      managed_by      = "terraform"
+      gitops_operator = "argocd"
+      environment     = "dev"
+      github_repo     = "ishuar/argocd-multi-cluster"
+    },
+  var.tags)
 
   ## Workload Identities
   external-secrets-operator = [
@@ -50,4 +52,5 @@ locals {
     local.external-dns,
     local.cert-manager,
   )
+
 }
