@@ -1,14 +1,13 @@
 environments:
   default:
     values:
-    ## To use terraform state outputs in the helm release (ingress DNS name,clientsIds etc)
-    ## workflow should have tfstate bucket read permissions
-    ## https://github.com/helmfile/vals?tab=readme-ov-file#terraform-in-azurerm-blob-storage-tfstateazurerm
+      ## To use terraform state outputs in the helm release (ingress DNS name,clientsIds etc)
+      ## workflow should have tfstate bucket read permissions
+      ## https://github.com/helmfile/vals?tab=readme-ov-file#terraform-in-azurerm-blob-storage-tfstateazurerm
       - argocdClientId: '{{ printf "ref+tfstateazurerm://%s/output.client_id_used_by_argocd" (readFile "global.yaml" | fromYaml).tfstate  }}'
       - tenantId: '{{ printf "ref+tfstateazurerm://%s/output.tenant_id" (readFile "global.yaml" | fromYaml).tfstate  }}'
       - externalSecretsClientId: '{{ printf "ref+tfstateazurerm://%s/output.client_id_used_by_external_secrets_operator" (readFile "global.yaml" | fromYaml).tfstate  }}'
       - key_vault_url: '{{ printf "ref+tfstateazurerm://%s/output.secrets_key_vault_url" (readFile "global.yaml" | fromYaml).tfstate  }}'
-
 ---
 repositories:
   - name: argo
@@ -32,7 +31,7 @@ releases:
   - name: argocd
     namespace: argocd
     chart: argo/argo-cd
-    version: "5.53.9"
+    version: '5.53.9'
     values:
       - ./values/argocd.yaml
       - server:
@@ -51,7 +50,7 @@ releases:
   - name: external-secrets
     namespace: external-secrets
     chart: ../charts/external-secrets-operator
-    version: "0.9.7"
+    version: '0.9.7'
     values:
       - ./values/external-secrets.yaml
       - externalsecrets:
