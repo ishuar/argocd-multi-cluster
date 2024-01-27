@@ -27,3 +27,8 @@ output "tenant_id" {
   value       = data.azurerm_subscription.current.tenant_id
   description = "The tenant ID of the current Azure account."
 }
+
+output "secrets_key_vault_url" {
+  value       = azurerm_key_vault.aks.vault_uri
+  description = "The URL of the Key Vault created for the AKS cluster."
+}

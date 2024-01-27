@@ -7,6 +7,7 @@ environments:
       - argocdClientId: '{{ printf "ref+tfstateazurerm://%s/output.client_id_used_by_argocd" (readFile "global.yaml" | fromYaml).tfstate  }}'
       - tenantId: '{{ printf "ref+tfstateazurerm://%s/output.tenant_id" (readFile "global.yaml" | fromYaml).tfstate  }}'
       - externalSecretsClientId: '{{ printf "ref+tfstateazurerm://%s/output.client_ids.sa-external-secrets-operator" (readFile "global.yaml" | fromYaml).tfstate  }}'
+      - key_vault_url: '{{ printf "ref+tfstateazurerm://%s/output.secrets_key_vault_url" (readFile "global.yaml" | fromYaml).tfstate  }}'
 
 ---
 repositories:
@@ -49,12 +50,16 @@ releases:
 
   - name: external-secrets
     namespace: external-secrets
-    chart: external-secrets/external-secrets
+    chart: ../charts/external-secrets-operator
     version: "0.9.7"
     values:
       - ./values/external-secrets.yaml
-      - serviceAccount:
-          annotations:
-            azure.workload.identity/client-id: '{{ .Values.externalSecretsClientId }}'
-            azure.workload.identity/tenant-id: '{{ .Values.tenantId }}'
-          name: sa-external-secrets-operator ## should match with the sa used in federation.
+      - externalsecrets:
+          serviceAccount:
+            annotations:
+              azure.workload.identity/client-id: '{{ .Values.externalSecretsClientId }}'
+              azure.workload.identity/tenant-id: '{{ .Values.tenantId }}'
+            name: sa-external-secrets-operator ## should match with the sa used in federation.
+        clusterSecretStore:
+          azurekv:
+            vaultUrl: '{{ .Values.key_vault_url }}'

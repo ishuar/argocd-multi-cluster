@@ -12,4 +12,4 @@ externalsecrets:
 clusterSecretStore:
   enabled: true
   azurekv:
-    vaultUrl: https://some-unique-key-vault-name.vault.azure.net/
+#    vaultUrl: https://some-unique-key-vault-name.vault.azure.net/
