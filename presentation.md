@@ -19,7 +19,7 @@ Welcome to the tech time :rocket: I am Ishan from Special Delivery :star:
 ---
 ![ blur bg opacity:.7](assets/work.png)
 
-## Agenda :dart:
+## Timeline :alarm_clock:
 
 - Introduction
 - ArgoCD
@@ -30,7 +30,7 @@ Welcome to the tech time :rocket: I am Ishan from Special Delivery :star:
 
 ---
 
-## Introduction :telescope:
+## Agenda :dart:
 
 - In this presentation, we will discuss about how to deploy applications in an multi-cluster environment distributed across multiple clouds using ArgoCd and its native operators.
 
