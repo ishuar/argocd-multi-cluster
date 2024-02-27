@@ -4,7 +4,7 @@ locals {
 
 ## It is assumed that the remote cluster is already created, create new if does not exists and use the inputs accordingly.
 ## Generally new cluster creation/config should be moved to another directory for better maintainability.
-## Treat this as a demo ( simmple used case and adapt as per your needs)
+## Treat this as a demo ( simple used case and adapt as per your needs)
 
 data "azurerm_kubernetes_cluster" "remote" {
   name                = var.remote_cluster_name
@@ -12,7 +12,7 @@ data "azurerm_kubernetes_cluster" "remote" {
 }
 
 ## Identity to add remote cluster to the ArgoCD managed clusters as secrets.
-## Dedicated file and Configuration because on one UID we are mapping two service accounts.
+## Dedicated file and Configuration because of one UID we are mapping two service accounts.
 
 resource "azurerm_user_assigned_identity" "argocd" {
   name                = "${local.prefix}-remote-uid-001"
