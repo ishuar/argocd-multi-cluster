@@ -62,3 +62,10 @@ releases:
         clusterSecretStore:
           azurekv:
             vaultUrl: '{{ .Values.key_vault_url }}'
+
+  - name: argocd-bootstrap-app
+    namespace: argocd
+    chart: argo/argocd-apps
+    version: '1.6.2'
+    values:
+      - ./values/argocd-bootstrap-app.yaml
