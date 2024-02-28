@@ -57,7 +57,7 @@ The repository is organized as follows:
 │   │   └── nginx-ingress-controller
 │   │       └── applicationset.yaml
 │   ├── envs                                              ## deployment environments( dev, stage , prod etc.) have same structure.
-│   │   ├── stage                                           ## dev/playground environment clusters directory configuration.
+│   │   ├── stage                                         ## dev/playground environment clusters directory configuration.
 │   │   │   ├── aws                                       ## AWS cloud clusters directory configuration.
 │   │       │   ├── globals                               ## Global Env. values for AWS cloud per app ::risk:: impacts all aws clusters in dev env.(disabled)
 │   │   │   │   │   ├── cert-manager                      ## Cert Manager ( Any Application holding global values for aws cloud ) (feature disabled in repo)
