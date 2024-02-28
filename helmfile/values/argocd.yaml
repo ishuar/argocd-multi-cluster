@@ -7,6 +7,14 @@ configs:
 server:
   podLabels:
     azure.workload.identity/use: "true"
+  ingress:
+    enabled: false
+    # annotations: {}
+    # ingressClassName: nginx
+    # hostname: argocd.stage.learndevops.in
+    # pathType: ImplementationSpecific
+    # tls: true
 controller:
   podLabels:
     azure.workload.identity/use: "true"
+extraObjects: []

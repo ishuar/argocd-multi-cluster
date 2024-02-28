@@ -31,7 +31,7 @@ releases:
   - name: argocd
     namespace: argocd
     chart: argo/argo-cd
-    version: '5.53.9'
+    version: '6.4.0'
     values:
       - ./values/argocd.yaml
       - server:
@@ -50,7 +50,7 @@ releases:
   - name: external-secrets
     namespace: external-secrets
     chart: ../charts/external-secrets-operator
-    version: '0.9.7'
+    disableValidationOnInstall: true
     values:
       - ./values/external-secrets.yaml
       - externalsecrets:
