@@ -1,5 +1,5 @@
 {
   "chartVersion": "1.13.0",
-  "environment": "stage",
+  "environment": "dev",
   "above_enviuornment_is_not_even_required_as_can_fetched_from_dir_str": "placeholder"
 }

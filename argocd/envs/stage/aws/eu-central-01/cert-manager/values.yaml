@@ -8,4 +8,4 @@ extraArgs:
 prometheus:
   enabled: false
 podLabels:
-  app.kubernetes.io/part-of: dev-fleet
+  app.kubernetes.io/part-of: stage-fleet

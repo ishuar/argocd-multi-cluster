@@ -1,3 +1,0 @@
-Basically each region has same directory structure identical to proposed RFC with less directories and one less tool.
-
-envs/[ENV]/[CLOUD-PROVIDER]/[CLOUD-REGION]/[NAMESPACE & APPNAME]/values.yaml

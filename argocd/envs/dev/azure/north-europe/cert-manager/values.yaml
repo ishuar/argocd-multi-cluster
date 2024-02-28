@@ -9,7 +9,7 @@ extraArgs:
 prometheus:
   enabled: false
 podLabels:
-  app.kubernetes.io/part-of: stage-fleet
+  app.kubernetes.io/part-of: dev-fleet
   azure.workload.identity/use: "true"
   region: north-europe
   cloud: azure

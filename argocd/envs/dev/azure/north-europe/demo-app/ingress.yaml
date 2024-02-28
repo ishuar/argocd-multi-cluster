@@ -7,7 +7,7 @@ metadata:
 spec:
   ingressClassName: nginx ## depends on the ingress controller you are using
   rules:
-    - host: sample-app.stage.learnstageops.in
+    - host: sample-app.stage.learndevops.in
       http:
         paths:
           - pathType: ImplementationSpecific
@@ -19,5 +19,5 @@ spec:
                   number: 8080
   tls:
     - hosts:
-        - sample-app.stage.learnstageops.in
+        - sample-app.stage.learndevops.in
       secretName: kubernetes-in-real-world-sample-app-tls

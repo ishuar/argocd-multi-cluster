@@ -11,7 +11,7 @@ podLabels:
   azure.workload.identity/use: "true"
   region: north-europe
   cloud: azure
-  app.kubernetes.io/part-of: stage-fleet
+  app.kubernetes.io/part-of: dev-fleet
 serviceMonitor:
   enabled: false
 provider: azure
