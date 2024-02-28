@@ -13,7 +13,7 @@ spec:
         generators:
           ## https://argocd-applicationset.readthedocs.io/en/stable/Generators-Git/
           - git:
-              repoURL: git@github.com:ishuar/argocd-multi-cluster.git
+              repoURL: https://github.com/ishuar/argocd-multi-cluster.git
               revision: main
               files:
                 - path: "argocd/envs/**/**/**/demo-app/git-generator-overides.json"
@@ -29,10 +29,14 @@ spec:
   template:
     metadata:
       name: 'demo-app-{{index .path.segments 2}}-{{index .path.segments 3}}-{{index .path.segments 4}}'
+      labels:
+        app.kubernetes.io/component: argocd-application
+        cluster-region: '{{index .path.segments 4}}'
+        cloud-provider: '{{index .path.segments 3}}'
     spec:
       project: default ## Can use dynamic project name from git file generator. (project shoud be created before hand and can be part of bootstrap)
       sources:
-        - repoURL: 'git@github.com:ishuar/argocd-multi-cluster.git'
+        - repoURL: 'https://github.com/ishuar/argocd-multi-cluster.git'
           targetRevision: main
           path: '{{.path.path}}'
       destination:
