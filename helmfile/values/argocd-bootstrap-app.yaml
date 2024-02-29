@@ -6,7 +6,7 @@ applicationsets:
       - resources-finalizer.argocd.argoproj.io
     additionalLabels:
       app.kubernetes.io/managed-by: argocd
-      app.kubernetes.io/name: argocd-bootstrap-app
+      app.kubernetes.io/component: argocd-bootstrap-app
       app.kubernetes.io/github-repo: argocd-multi-cluster
       app.kubernetes.io/owner: ishuar
     goTemplateOptions: ["missingkey=error"]
@@ -22,6 +22,48 @@ applicationsets:
         name: '{{.path.basename}}'
         labels:
           app.kubernetes.io/component: argocd-cluster-secret
+          app.kubernetes.io/name: '{{.path.basename}}'
+          app.kubernetes.io/github-repo: argocd-multi-cluster
+          app.kubernetes.io/owner: ishuar
+        annotations: {}
+      spec:
+        project: default
+        source:
+          repoURL: https://github.com/ishuar/argocd-multi-cluster.git
+          targetRevision: HEAD
+          path: '{{.path.path}}'
+        destination:
+          namespace: argocd
+          server: https://kubernetes.default.svc
+        syncPolicy:
+          automated:
+            selfHeal: true
+            prune: false
+          syncOptions:
+            - ApplyOutOfSyncOnly=true
+  - name: workload-bootstrap-appset
+    namespace: argocd
+    project: default
+    finalizers:
+      - resources-finalizer.argocd.argoproj.io
+    additionalLabels:
+      app.kubernetes.io/managed-by: argocd
+      app.kubernetes.io/component: argocd-bootstrap-app
+      app.kubernetes.io/github-repo: argocd-multi-cluster
+      app.kubernetes.io/owner: ishuar
+    goTemplateOptions: ["missingkey=error"]
+    goTemplate: true
+    generators:
+      - git:
+          repoURL: https://github.com/ishuar/argocd-multi-cluster.git
+          revision: HEAD
+          directories:
+            - path: "argocd/common/*"
+    template:
+      metadata:
+        name: '{{.path.basename}}'
+        labels:
+          app.kubernetes.io/component: argocd-workload-apps
           app.kubernetes.io/name: '{{.path.basename}}'
           app.kubernetes.io/github-repo: argocd-multi-cluster
           app.kubernetes.io/owner: ishuar
