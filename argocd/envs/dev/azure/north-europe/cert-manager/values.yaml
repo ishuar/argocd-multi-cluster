@@ -14,6 +14,7 @@ podLabels:
   region: north-europe
   cloud: azure
 serviceAccount:
+  name: sa-cert-manager
   annotations:
     azure.workload.identity/client-id: "7e30f1dd-e2e9-41d9-ae7a-6fdc6356920f" ## from terraform output client_ids command
     azure.workload.identity/tenant-id: "0fe65e77-cff2-4f4e-b604-796a2bd02763"
