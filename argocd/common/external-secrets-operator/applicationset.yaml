@@ -31,6 +31,7 @@ spec:
       name: 'external-secrets-{{index .path.segments 2}}-{{index .path.segments 3}}-{{index .path.segments 4}}'
       labels:
         app.kubernetes.io/component: argocd-application
+        app.kubernetes.io/part-of: '{{.environment}}-fleet'
         cluster-region: '{{index .path.segments 4}}'
         cloud-provider: '{{index .path.segments 3}}'
     spec:
@@ -62,4 +63,3 @@ spec:
           - ApplyOutOfSyncOnly=true
           - ServerSideApply=true
           - RespectIgnoreDifferences=true
-

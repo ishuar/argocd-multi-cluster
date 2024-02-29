@@ -31,6 +31,7 @@ spec:
       name: 'cert-manager-{{index .path.segments 2}}-{{index .path.segments 3}}-{{index .path.segments 4}}' ## in case detailed name is required.
       labels:
         app.kubernetes.io/component: argocd-application
+        app.kubernetes.io/part-of: '{{.environment}}-fleet'
         cluster-region: '{{index .path.segments 4}}'
         cloud-provider: '{{index .path.segments 3}}'
     spec:
@@ -62,5 +63,3 @@ spec:
           - ServerSideApply=true          ## https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/#server-side-apply
           - RespectIgnoreDifferences=true ## https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/#respect-ignore-difference-configs
       ignoreDifferences: []               ## https://argo-cd.readthedocs.io/en/stable/user-guide/diffing/
-
-
