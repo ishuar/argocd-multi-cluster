@@ -19,4 +19,4 @@ spec:
             resourceGroupName: rg-argocd-cluster
             subscriptionID: "66f26fea-ff43-4f9a-bf6d-e2d18d696616"
             managedIdentity:
-              clientID: "4d4dc855-2a64-4c68-bcfd-1fc8ba85d6dd"
+              clientID: "7e30f1dd-e2e9-41d9-ae7a-6fdc6356920f" ## from terraform output client_ids command
