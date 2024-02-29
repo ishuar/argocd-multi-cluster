@@ -37,3 +37,8 @@ output "secrets_key_vault_url" {
   value       = azurerm_key_vault.aks.vault_uri
   description = "The URL of the Key Vault created for the AKS cluster."
 }
+
+output "dns_zone_name_servers" {
+  value       = azurerm_dns_zone.stage_learndevops_in.name_servers
+  description = "The name servers for the DNS Zone."
+}
