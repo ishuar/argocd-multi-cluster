@@ -57,6 +57,10 @@ spec:
           selfHeal: true
         ## https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/#sync-options
         syncOptions:
-          - CreateNamespace=true
-          - ApplyOutOfSyncOnly=true
-          - ServerSideApply=true
+          - CreateNamespace=true          ## https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/#create-namespace
+          - ApplyOutOfSyncOnly=true       ## https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/#selective-sync
+          - ServerSideApply=true          ## https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/#server-side-apply
+          - RespectIgnoreDifferences=true ## https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/#respect-ignore-difference-configs
+      ignoreDifferences: []               ## https://argo-cd.readthedocs.io/en/stable/user-guide/diffing/
+
+
