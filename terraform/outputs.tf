@@ -38,6 +38,7 @@ output "secrets_key_vault_url" {
   description = "The URL of the Key Vault created for the AKS cluster."
 }
 
+## delegation of DNS Zone on your domain registrar
 output "dns_zone_name_servers" {
   value       = azurerm_dns_zone.stage_learndevops_in.name_servers
   description = "The name servers for the DNS Zone."
