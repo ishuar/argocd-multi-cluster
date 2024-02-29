@@ -15,5 +15,5 @@ podLabels:
   cloud: azure
 serviceAccount:
   annotations:
-    azure.workload.identity/client-id: "4d4dc855-2a64-4c68-bcfd-1fc8ba85d6dd"
-    azure.workload.identity/tenant-id: "3de73d75-c7d2-4360-9c96-48d3caab11e5"
+    azure.workload.identity/client-id: "7e30f1dd-e2e9-41d9-ae7a-6fdc6356920f" ## from terraform output client_ids command
+    azure.workload.identity/tenant-id: "0fe65e77-cff2-4f4e-b604-796a2bd02763"

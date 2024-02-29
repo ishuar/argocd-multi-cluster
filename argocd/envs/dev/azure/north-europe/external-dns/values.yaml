@@ -5,8 +5,8 @@ serviceAccount:
   name: sa-external-dns
   create: true
   annotations:
-    azure.workload.identity/client-id: "e8a773b0-e475-4aae-a5b1-507a1a7a72cc"
-    azure.workload.identity/tenant-id: "3de73d75-c7d2-4360-9c96-48d3caab11e5"
+    azure.workload.identity/client-id: "d12d8cba-7304-4c96-9e1a-a34385298cfa" ## from terraform output client_ids command
+    azure.workload.identity/tenant-id: "0fe65e77-cff2-4f4e-b604-796a2bd02763"
 podLabels:
   azure.workload.identity/use: "true"
   region: north-europe
