@@ -2,7 +2,7 @@
 ## fully isolated and only impact the cluster in the cloud provider region
 
 externalsecrets:
-  fullnameOverride: external-secrets
+  fullnameOverride: external-secrets-operator
   serviceAccount:
     name: sa-external-secrets-operator
     create: true
