@@ -2,6 +2,7 @@ ingress:
   enabled: false ## deliberately set to false to avoid creating ingress in stage environment
   ## https://learn.microsoft.com/en-us/azure/aks/app-routing?tabs=default%2Cdeploy-app-default#create-the-ingress-object
   className: "webapprouting.kubernetes.azure.com"
+  annotations: {}
   hosts:
     - host: sample-app.stage.service.learndevops.in
       paths:
