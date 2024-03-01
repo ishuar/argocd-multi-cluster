@@ -1,0 +1,12 @@
+ingress:
+  enabled: false ## deliberately set to false to avoid creating ingress in stage environment
+  className: "nginx"
+  hosts:
+    - host: sample-app.stage.learndevops.in
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+   - secretName: sample-app-tls
+     hosts:
+       - sample-app.stage.learndevops.in
