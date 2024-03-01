@@ -2,11 +2,11 @@ ingress:
   enabled: true
   className: "nginx"
   hosts:
-    - host: sample-app.dev.learndevops.in
+    - host: sample-app.dev.service.learndevops.in
       paths:
         - path: /
           pathType: ImplementationSpecific
   tls:
    - secretName: sample-app-tls
      hosts:
-       - sample-app.dev.learndevops.in
+       - sample-app.dev.service.learndevops.in

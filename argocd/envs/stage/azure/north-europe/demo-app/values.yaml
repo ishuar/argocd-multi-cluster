@@ -1,12 +1,13 @@
 ingress:
   enabled: false ## deliberately set to false to avoid creating ingress in stage environment
-  className: "nginx"
+  ## https://learn.microsoft.com/en-us/azure/aks/app-routing?tabs=default%2Cdeploy-app-default#create-the-ingress-object
+  className: "webapprouting.kubernetes.azure.com"
   hosts:
-    - host: sample-app.stage.learndevops.in
+    - host: sample-app.stage.service.learndevops.in
       paths:
         - path: /
           pathType: ImplementationSpecific
   tls:
    - secretName: sample-app-tls
      hosts:
-       - sample-app.stage.learndevops.in
+       - sample-app.stage.service.learndevops.in

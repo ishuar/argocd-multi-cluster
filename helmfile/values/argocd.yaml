@@ -12,7 +12,7 @@ server:
     annotations:
       cert-manager.io/cluster-issuer: "letsencrypt-prod"
     ingressClassName: nginx
-    hostname: argocd.stage.learndevops.in ## will be only reachable if all other components are in place
+    hostname: argocd.service.learndevops.in ## will be only reachable if all other components are in place
     pathType: ImplementationSpecific
     tls: true
 controller:

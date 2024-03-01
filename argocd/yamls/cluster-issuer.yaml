@@ -15,7 +15,7 @@ spec:
       - dns01:
           azureDNS:
             environment: AzurePublicCloud
-            hostedZoneName: stage.learndevops.in
+            hostedZoneName: service.learndevops.in
             resourceGroupName: rg-argocd-cluster
             subscriptionID: "66f26fea-ff43-4f9a-bf6d-e2d18d696616"
             managedIdentity:
