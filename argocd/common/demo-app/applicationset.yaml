@@ -39,7 +39,16 @@ spec:
       sources:
         - repoURL: 'https://github.com/ishuar/argocd-multi-cluster.git'
           targetRevision: main
-          path: '{{.path.path}}'
+          path: ./charts/sample-app
+          helm:
+            releaseName: demo-app
+            # Helm values files for overriding values in the helm chart
+            valueFiles:
+              - $values/{{.path.path}}/values.yaml
+            skipCrds: false
+        - repoURL: 'https://github.com/ishuar/argocd-multi-cluster.git'
+          targetRevision: main
+          ref: values
       destination:
         server: '{{.server}}'
         namespace: '{{.path.basenameNormalized}}'
