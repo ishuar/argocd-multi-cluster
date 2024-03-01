@@ -16,7 +16,7 @@ spec:
               repoURL: https://github.com/ishuar/argocd-multi-cluster.git
               revision: main
               files:
-                - path: "argocd/envs/**/**/**/external-secrets/git-generator-overides.json"
+                - path: "argocd/envs/**/**/**/external-secrets-operator/git-generator-overides.json"
           ## https://argocd-applicationset.readthedocs.io/en/stable/Generators-Cluster/
           - clusters:
               selector:
