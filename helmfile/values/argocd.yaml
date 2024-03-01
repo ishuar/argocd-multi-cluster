@@ -8,12 +8,13 @@ server:
   podLabels:
     azure.workload.identity/use: "true"
   ingress:
-    enabled: false
-    # annotations: {}
-    # ingressClassName: nginx
-    # hostname: argocd.stage.learndevops.in
-    # pathType: ImplementationSpecific
-    # tls: true
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    ingressClassName: nginx
+    hostname: argocd.stage.learndevops.in ## will be only reachable if all other components are in place
+    pathType: ImplementationSpecific
+    tls: true
 controller:
   podLabels:
     azure.workload.identity/use: "true"
