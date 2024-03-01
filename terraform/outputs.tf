@@ -12,8 +12,8 @@ output "subjects" {
   description = "The subjects for the Federated Identity Credential associated with the Identities"
 }
 
-output "client_id_used_by_external_secrets_operator" {
-  value       = module.workload_identity["sa-external-secrets-operator"].client_id
+output "client_id_used_by_external_secrets_operator_argocd" {
+  value       = module.workload_identity["sa-external-secrets-operator-argocd"].client_id
   description = "Value of client_id used by External Secrets Operator."
 }
 

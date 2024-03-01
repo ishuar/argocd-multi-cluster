@@ -13,7 +13,17 @@ locals {
   external-secrets-operator = [
     {
       service_account_name = "sa-external-secrets-operator"
-      namespace            = "external-secrets"
+      namespace            = "external-secrets-operator"
+      role_assignments = [
+        {
+          role_definition_name = "Key Vault Secrets User"
+          scope                = azurerm_key_vault.aks.id
+        },
+      ]
+    },
+    {
+      service_account_name = "sa-external-secrets-operator-argocd"
+      namespace            = "external-secrets-operator-argocd"
       role_assignments = [
         {
           role_definition_name = "Key Vault Secrets User"

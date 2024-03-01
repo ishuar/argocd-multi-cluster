@@ -6,7 +6,7 @@ environments:
       ## https://github.com/helmfile/vals?tab=readme-ov-file#terraform-in-azurerm-blob-storage-tfstateazurerm
       - argocdClientId: '{{ printf "ref+tfstateazurerm://%s/output.client_id_used_by_argocd" (readFile "global.yaml" | fromYaml).tfstate  }}'
       - tenantId: '{{ printf "ref+tfstateazurerm://%s/output.tenant_id" (readFile "global.yaml" | fromYaml).tfstate  }}'
-      - externalSecretsClientId: '{{ printf "ref+tfstateazurerm://%s/output.client_id_used_by_external_secrets_operator" (readFile "global.yaml" | fromYaml).tfstate  }}'
+      - argocdExternalSecretsClientId: '{{ printf "ref+tfstateazurerm://%s/output.client_id_used_by_external_secrets_operator_argocd" (readFile "global.yaml" | fromYaml).tfstate  }}'
       - key_vault_url: '{{ printf "ref+tfstateazurerm://%s/output.secrets_key_vault_url" (readFile "global.yaml" | fromYaml).tfstate  }}'
 ---
 repositories:
@@ -47,8 +47,8 @@ releases:
               azure.workload.identity/client-id: '{{ .Values.argocdClientId }}'
               azure.workload.identity/tenant-id: '{{ .Values.tenantId }}'
 
-  - name: external-secrets
-    namespace: external-secrets
+  - name: external-secrets-operator-argocd ## this ESO is only used for ArgoCD, for workloads we will use a different ESO to avoid conflicts.
+    namespace: external-secrets-operator-argocd
     chart: ../charts/external-secrets-operator
     disableValidationOnInstall: true
     values:
@@ -56,14 +56,14 @@ releases:
       - externalsecrets:
           serviceAccount:
             annotations:
-              azure.workload.identity/client-id: '{{ .Values.externalSecretsClientId }}'
+              azure.workload.identity/client-id: '{{ .Values.argocdExternalSecretsClientId }}'
               azure.workload.identity/tenant-id: '{{ .Values.tenantId }}'
-            name: sa-external-secrets-operator ## should match with the sa used in federation.
+            name: sa-external-secrets-operator-argocd ## should match with the sa used in federation, using same UID for both argocd and workload ESO.
         clusterSecretStore:
           azurekv:
             vaultUrl: '{{ .Values.key_vault_url }}'
 
-  - name: argocd-bootstrap-app
+  - name: argocd-bootstrap-appset
     namespace: argocd
     chart: argo/argocd-apps
     version: '1.6.2'
