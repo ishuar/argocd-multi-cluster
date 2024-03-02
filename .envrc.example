@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+export AZURE_CONFIG_DIR="${PWD}/.azure"
+
+
+export AZURE_SUBSCRIPTION_ID=""
+export ARM_SUBSCRIPTION_ID=""
