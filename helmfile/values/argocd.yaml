@@ -4,6 +4,28 @@
 configs:
   params:
     server.insecure: true ## only for demo purpose - do not use in production
+  rbac:
+    policy.csv: |
+      g, learndevopsdotin:ArgoCDAdmins, role:admin
+      g, learndevopsdotin:ArgoCDReadOnly, role:readonly
+  cm:
+    ## https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/#2-configure-argo-cd-for-sso
+    url: https://argocd.service.learndevops.in
+    ## https://github.com/argoproj-labs/argocd-operator/issues/375#issuecomment-1966981870
+    dex.config: |
+      connectors:
+        - type: github
+          id: github
+          name: GitHub
+          config:
+            clientID: 36059bae753de446f42c
+            clientSecret: $argocd-github-sso:dex.github.clientSecret
+            orgs:
+            - name: learndevopsdotin
+              teams:
+                - ArgoCDAdmins
+                - ArgoCDReadOnly
+    admin.enabled: false
 server:
   podLabels:
     azure.workload.identity/use: "true"
@@ -18,4 +40,27 @@ server:
 controller:
   podLabels:
     azure.workload.identity/use: "true"
-extraObjects: []
+extraObjects:
+  - |
+    apiVersion: external-secrets.io/v1beta1
+    kind: ExternalSecret
+    metadata:
+      name: argocd-github-sso
+    spec:
+      refreshInterval: 10s
+      secretStoreRef:
+        kind: ClusterSecretStore
+        name: azure-cluster-secret-store
+      target:
+        name: argocd-github-sso
+        template:
+          engineVersion: v2
+          metadata:
+            labels:
+              app.kubernetes.io/part-of: argocd
+          data:
+            dex.github.clientSecret: '{{`{{ .githubClientSecret }}`}}'
+      data:
+        - secretKey: githubClientSecret
+          remoteRef:
+            key: dex-github-client-secret
