@@ -38,7 +38,7 @@ applicationsets:
         syncPolicy:
           automated:
             selfHeal: true
-            prune: false
+            prune: true  ### <--- NOT RECOMENDED FOR PRODUCTION ---> ###
           syncOptions:
             - ApplyOutOfSyncOnly=true
   - name: workload-bootstrap-appset
@@ -80,6 +80,6 @@ applicationsets:
         syncPolicy:
           automated:
             selfHeal: true
-            prune: false
+            prune: true   ### <--- NOT RECOMENDED FOR PRODUCTION ---> ###
           syncOptions:
             - ApplyOutOfSyncOnly=true
