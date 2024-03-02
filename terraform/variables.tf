@@ -70,3 +70,14 @@ variable "role_definition_name" {
   description = "(optional) Role definition name to assign to the workload identity used by ArgoCD to manage remote cluster. Default value is Azure Kubernetes Service RBAC Cluster Admin."
   default     = "Azure Kubernetes Service RBAC Cluster Admin"
 }
+
+### Extras ###
+
+## https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/#1-register-the-application-in-the-identity-provider
+variable "dex_github_client_secret" {
+  type        = string
+  description = "(optional) Client secret for the GitHub OAuth application used by ArgoCD. This is used to authenticate users login to argocd with GitHub."
+  sensitive   = true
+  default     = ""
+}
+

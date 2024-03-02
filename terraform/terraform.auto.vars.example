@@ -2,4 +2,5 @@ tenant_id                          = "<TENANT_ID>"
 dns_zone_name                      = "<DNS_ZONE_NAME>"
 remote_cluster_name                = "<REMOTE_AKS_CLUSTER_NAME>"
 remote_cluster_resource_group_name = "<REMOTE_AKS_CLUSTER_RESOURCE_GROUP_NAME>"
-key_vault_name                     = "YOUR_UNIQUE_KEY_VAULT_NAME"
+key_vault_name                     = "<YOUR_UNIQUE_KEY_VAULT_NAME>"
+dex_github_client_secret           = "<YOUR_GITHUB_OAUTH_APP_CLIENT_SECRET>" [[optional]]
