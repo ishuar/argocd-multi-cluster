@@ -32,6 +32,9 @@ releases:
     namespace: argocd
     chart: argo/argo-cd
     version: '6.4.0'
+    ## https://helmfile.readthedocs.io/en/latest/#dag-aware-installationdeletion-ordering-with-needs
+    needs:
+      - external-secrets-operator-argocd/external-secrets-operator-argocd
     values:
       - ./values/argocd.yaml
       - server:
@@ -69,3 +72,5 @@ releases:
     version: '1.6.2'
     values:
       - ./values/argocd-bootstrap-app.yaml
+    needs:
+      - argocd/argocd
